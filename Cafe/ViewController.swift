@@ -37,7 +37,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
         NewNameTextField.delegate = self
         NewPriceTextField.delegate = self
         super.viewDidLoad()
-        SortedLabel.isHidden = true
         NewItemButton.isHidden = true
         NewPriceLabel.isHidden = true
         NewNameLabel.isHidden = true
@@ -78,31 +77,39 @@ class ViewController: UIViewController, UITextFieldDelegate{
             NewNameLabel.isHidden = false
             NewNameTextField.isHidden = false
             NewPriceTextField.isHidden = false
-        } else if (z == 0 || z == 1){
+            SortedLabel.isHidden = true
+        } else if (z == 0){
             NewItemButton.isHidden = true
             NewPriceLabel.isHidden = true
             NewNameLabel.isHidden = true
             NewNameTextField.isHidden = true
             NewPriceTextField.isHidden = true
+        } else if (z == 1){
+            SortedLabel.isHidden = true
         }
+        SortedLabel.text = "\(items)"
     }
     
     @IBAction func AddItemButton(_ sender: Any) {
         if (z == 0){
-        SortedLabel.isHidden = true
+            SortedLabel.isHidden = false
+            SortedLabel.text = "\(items)"
         let itemName: String = NameTextField.text!
             if let ooga = items[itemName]{
                 x += ooga
                 yourItems[itemName] = ooga
             } else{
                 print("Not found")
+                InfoLabel.text = "Item Not Found"
             }
             InfoLabel.text = "Total Price: \(x)"
         }
         if (z == 1){
+            SortedLabel.isHidden = true
             let password = NameTextField.text!
             if (password == "ChuckNorris"){
                 z = 2
+                SortedLabel.isHidden = true
                 print("correct")
                 NameTextField.text = ""
                 NewItemButton.isHidden = false
@@ -114,9 +121,9 @@ class ViewController: UIViewController, UITextFieldDelegate{
         }
         if (z == 2){
             NameLabel.text = "Remove Item"
-            
             let itemName = NameTextField.text!
             items[itemName] = nil
+            IntroLabel.text = "Removed"
             NameTextField.resignFirstResponder()
             NewNameTextField.resignFirstResponder()
             NewPriceTextField.resignFirstResponder()
@@ -126,17 +133,21 @@ class ViewController: UIViewController, UITextFieldDelegate{
     @IBAction func AdminButton(_ sender: Any) {
         if (z == 0){
             z = 1
+                SortedLabel.isHidden = true
+                SortedLabel.text = "\(items)"
             IntroLabel.text = "Welcome to Admin Panel! What is the password?"
             NameLabel.text = "Password: "
-            SortedLabel.isHidden = true
             SortNamesButton.isHidden = true
             SortPricesButton.isHidden = true
             InfoLabel.isHidden = true
             NameTextField.text = ""
         } else if (z == 1 || z == 2){
             z = 0
+            
+            SortedLabel.text = "\(items)"
             IntroLabel.text = "Welcome to the Cafe! What would you like to buy?"
             NameLabel.text = "Name of Item: "
+            SortedLabel.isHidden = false
             SortNamesButton.isHidden = false
             SortPricesButton.isHidden = false
             InfoLabel.isHidden = false
@@ -158,6 +169,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         SortedLabel.isHidden = false
         let namesSorted = yourItems.sorted(by: <)
         SortedLabel.text = "\(namesSorted)"
+        InfoLabel.text = "Sorted"
         NameTextField.resignFirstResponder()
         NewNameTextField.resignFirstResponder()
         NewPriceTextField.resignFirstResponder()
@@ -167,6 +179,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         SortedLabel.isHidden = false
         let priceSorted = yourItems.sorted(by: { $0.value < $1.value })
         SortedLabel.text = "\(priceSorted)"
+        InfoLabel.text = "Sorted"
         NameTextField.resignFirstResponder()
         NewNameTextField.resignFirstResponder()
         NewPriceTextField.resignFirstResponder()
@@ -178,20 +191,20 @@ class ViewController: UIViewController, UITextFieldDelegate{
         let itemPrice = NewPriceTextField.text!
         if let condition: Double = Double(itemPrice){
             items[itemName] = condition
+            IntroLabel.text = "Added New Item"
             NameTextField.resignFirstResponder()
             NewNameTextField.resignFirstResponder()
             NewPriceTextField.resignFirstResponder()    }
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            
-            NameTextField.resignFirstResponder()
-            NewNameTextField.resignFirstResponder()
-            NewPriceTextField.resignFirstResponder()
-            return true
-            
-        }
-}
         
 }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        NameTextField.resignFirstResponder()
+        NewNameTextField.resignFirstResponder()
+        NewPriceTextField.resignFirstResponder()
+        return true
+        
+    }}
 
 
     
